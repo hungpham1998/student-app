@@ -18,6 +18,7 @@ class studentDetail extends Component {
     this.state = {
       status: false,
       name: this.props.navigation.state.params.Name,
+
       listStudentPoint: [],
       listStudentAttend:[]
     };
@@ -57,9 +58,10 @@ class studentDetail extends Component {
         }
       );  
       const sresponse = await response.json();
-      if (sresponse.length > 0) {
+      console.warn(sresponse.Student)
+      if (sresponse.Student.student.length > 0) {
         await this.setState({
-          listStudentPoint:  sresponse[0].pointstudents
+          listStudentPoint:  sresponse.Student.student[0].pointstudents
         });
       }
       else {
@@ -104,7 +106,7 @@ class studentDetail extends Component {
           </View>
         </View>
         <View>
-          <View style={{ height: '50%' }}>
+          <View style={{ height: '40%' }}>
             {listStudentPoint !== null ? (
               <View style={{ marginTop: 10, alignItems:'center'}}  >
                 <Text > Thông tin bảng điểm sinh viên: {this.state.name} </Text>
@@ -118,11 +120,12 @@ class studentDetail extends Component {
                   }}>
                     <Text style={styles.point1}>ĐiểmKT1</Text>
                     <Text style={styles.point1} >ĐiểmKT2</Text>
-                    <Text  style={styles.point1} >ĐiểmKGK</Text>
-                    <Text style={styles.point1} >ĐiểmKCC</Text>
-                    <Text style={styles.point1} >ĐiểmKT</Text> 
+                    <Text  style={styles.point1} >ĐiểmGK</Text>
+                    <Text style={styles.point1} >ĐiểmCC</Text>
+                    <Text style={styles.point1} >ĐiểmT</Text> 
+                    <Text style={styles.point1} >ĐiểmTk</Text> 
+                    {/* <Text style={styles.point1} >ĐiểmT</Text>  */}
                     <Text style={styles.point2} >Môn</Text> 
-                    <Text style={styles.point1} >Năm</Text> 
                   </View>
                   <FlatList data={listStudentPoint}
                   renderItem={({ item, index }) => {
@@ -133,7 +136,7 @@ class studentDetail extends Component {
             )
               : <Text style={{textAlign:'center' , color: " #ff3300"}}> Không có dữ liệu điểm </Text>}
           </View>
-          <View style={{ height: '50%' }}>
+          <View style={{ height: '40%' }}>
             {listStudentAttend !== null ? (
               <View style={{ marginTop: 10, alignItems:'center'}}  >
                 <Text > Thông tin điểm danh sinh viên: {this.state.name} </Text>
@@ -157,7 +160,10 @@ class studentDetail extends Component {
                 </View>
               </View>
             )
-              : <Text style={{textAlign:'center' , color: " #ff3300"}}> Không có dữ liệu điểm danh</Text>}
+              : <Text style={{textAlign:'center'}}> Không có dữ liệu điểm danh</Text>}
+          </View>
+          <View style={{ height: '20%' }} >
+             
           </View>
         </View>
       </View >
@@ -207,8 +213,8 @@ class FlatListPoint extends Component {
             <Text style={styles.point1} > {this.props.item.PointGK} </Text>   
             <Text  style={styles.point1}> {this.props.item.PointCC} </Text>
             <Text style={styles.point1}>  {this.props.item.PointT}  </Text>
+            <Text style={styles.point1}>  {this.props.item.PointTK}  </Text>
             <Text style={styles.point2}>  {this.props.item.subject.Title}  </Text>
-            <Text style={styles.point1}>  {this.props.item.learnyear.Title} </Text>
        </View>
 
     );
