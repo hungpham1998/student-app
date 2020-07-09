@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import moment from "moment";
 import { serviceapi } from "../../../api/api";
+import { Header,   } from 'react-native-elements'
 
 class FlatListItem extends Component {
   studentid = () => {
@@ -93,17 +94,10 @@ class Learnclass extends Component {
     const listdata = this.state.listdata;
     return (
       <View style={styles.body}>
-        <View
-          style={{
-            padding: 10,
-            alignContent: "center",
-            alignItems: "center",
-            marginTop: 10,
-            backgroundColor: "white"
-          }}
-        >
-          <Text> Thông tin danh sách lớp học </Text>
-        </View>
+       <Header 
+              containerStyle={{ paddingBottom:20 }}
+              centerComponent={<Text style={{ alignItems: "center"}}> Danh sách lớp học </Text>}
+            />
         <View>
           <FlatList
             data={listdata}

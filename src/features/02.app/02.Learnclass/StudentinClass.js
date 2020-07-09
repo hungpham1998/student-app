@@ -8,8 +8,8 @@ import {
   View,
   TouchableOpacity
 } from "react-native";
-import { serviceapi } from "../../../api/api";
-
+import { serviceapi, api } from "../../../api/api";
+import { Header,   } from 'react-native-elements'
 class FlatListItem extends Component {
 
   pointstudent = () => {
@@ -36,7 +36,7 @@ class FlatListItem extends Component {
           }}
         >
           <TouchableOpacity onPress={this.pointstudent}>
-            <Image   source={this.props.item.Image ? { uri: this.props.item.Image  }:require("../../../image/image.jpg")}
+            <Image source={this.props.item.Image ? { uri: `${api}`+ this.props.item.Image  }:require("../../../image/image.jpg")}
               style={{ width: 120, height: 120, borderRadius: 55 }}
             />
           </TouchableOpacity>
@@ -90,12 +90,12 @@ export default class StudentinClass extends Component {
     data = async () => {
     try {
       const response = await fetch(
-        serviceapi + "learnclass/" + this.props.navigation.state.params.code,
+        serviceapi + "learnclass/" + this.props.navigation.state.params.code+ '/student',
         {
           method: "GET"
         }
       );
-        const sresponse = await response.json();
+      const sresponse = await response.json();
       this.setState({
           title: sresponse[0].Title,
           listStudent: sresponse[0].students
@@ -116,15 +116,22 @@ export default class StudentinClass extends Component {
         const title = this.state.title;
     return (
         <View style={styles.body}>
-            <View
+            {/* <View
                 style={{
                     flexDirection: "row",
                      alignItems: "center",
                     justifyContent: "center",
                     backgroundColor: 'white',
                     paddingTop:10,
-                }}>
-                <View style={{
+          }}> */}
+            <Header 
+                leftComponent={
+                    <TouchableOpacity onPress={() => this.backtoPage()}>
+                         <Image source={require("../../../image/left.png")}/>
+                    </TouchableOpacity>}
+                centerComponent={ <Text style={{ alignItems: "center"}}> Danh sách sinh viên lớp : {title}</Text>}
+            />
+                {/* <View style={{
                     flexDirection: "column",
                     paddingRight: 35
                 }}>
@@ -135,9 +142,10 @@ export default class StudentinClass extends Component {
                 <View style={{ flexDirection: "column" }}> 
                     <Text style={{ alignItems: "center"}}> Danh sách sinh viên lớp : {title}</Text>
                 </View>
-            </View>
+            </View> */}
             <FlatList
                 data={listStudent}
+                scrollEnabled={true}
                 renderItem={({ item, index }) => {
                 return <FlatListItem item={item} index={index} {...this.props} />;}}
             />
@@ -149,7 +157,6 @@ const styles = StyleSheet.create({
     body: {
         backgroundColor: "#F3F3F3",
         alignContent: "center",
-        marginTop: 20,
     },
     conten: {
         flexDirection: "row",

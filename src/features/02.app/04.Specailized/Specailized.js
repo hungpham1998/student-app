@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import moment from "moment";
 import { serviceapi } from "../../../api/api";
-
+import { Header,   } from 'react-native-elements'
 class FlatListItem extends Component {
   studentid = () => {
     let code = this.props.item.Id;
@@ -102,24 +102,14 @@ class Specailized extends Component {
     const listdata = this.state.listdata;
     return (
         <View style={styles.body}>
-           <View
-          style={{
-            flexDirection: "row",
-            paddingTop: 10,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white",
-          }}
-        >
-          <View style={{ flexDirection: "column",  paddingRight: 10 }}>
-            <TouchableOpacity onPress={() => this.backtoPage()}>
-                <Image source={require("../../../image/left.png")}/>
-            </TouchableOpacity>
-          </View>
-          <View style={{ flexDirection: "column" }}> 
-            <Text> Thông tin danh sách lớp học thuộc khoa <Text style={{color:'#66b3ff' }}>{this.state.title} </Text> </Text>
-          </View>
-        </View>  
+          <Header 
+                containerStyle={{height: 100, paddingTop:20 }}
+                leftComponent={
+                    <TouchableOpacity onPress={() => this.backtoPage()}>
+                         <Image source={require("../../../image/left.png")}/>
+                    </TouchableOpacity>}
+                centerComponent={  <Text> Thông tin danh sách lớp học thuộc khoa:  {this.state.title}  </Text>}
+            />
         <View>
             {listdata !== null ?
                 (<FlatList

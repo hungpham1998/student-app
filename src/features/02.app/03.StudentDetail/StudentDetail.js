@@ -9,7 +9,7 @@ import {
   View,
   FlatList
 } from "react-native";
-
+import { Header,   } from 'react-native-elements'
 import { serviceapi } from "../../../api/api";
 
 class studentDetail extends Component {
@@ -18,7 +18,8 @@ class studentDetail extends Component {
     this.state = {
       status: false,
       name: this.props.navigation.state.params.Name,
-
+      accumulation: 0, 
+      countCreaditNumber:0,
       listStudentPoint: [],
       listStudentAttend:[]
     };
@@ -58,9 +59,10 @@ class studentDetail extends Component {
         }
       );  
       const sresponse = await response.json();
-      console.warn(sresponse.Student)
       if (sresponse.Student.student.length > 0) {
         await this.setState({
+          accumulation: sresponse.Student.accumulation,
+          countCreaditNumber:sresponse.Student.countCreaditNumber,
           listStudentPoint:  sresponse.Student.student[0].pointstudents
         });
       }
@@ -85,26 +87,18 @@ class studentDetail extends Component {
 
   render() {
     const { listStudentAttend, listStudentPoint } = this.state;
+
     return (
       <View style={styles.body}>
-        <View
-          style={{
-            flexDirection: "row",
-            paddingTop: 10,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white",
-          }}
-        >
-          <View style={{ flexDirection: "column",  paddingRight: 35 }}>
-            <TouchableOpacity onPress={() => this.backtoPage()}>
-                <Image source={require("../../../image/left.png")}/>
-            </TouchableOpacity>
-          </View>
-          <View style={{ flexDirection: "column" }}> 
-              <Text style={{ alignItems: "center"}}> sinh viên : {this.state.name} </Text>
-          </View>
-        </View>
+        <Header 
+              containerStyle={{ paddingBottom:25 }}
+              leftComponent={
+                  <TouchableOpacity onPress={() => this.backtoPage()}>
+                        <Image source={require("../../../image/left.png")}/>
+                  </TouchableOpacity>}
+              centerComponent={<Text style={{ alignItems: "center"}}> Thông tin sinh viên : {this.state.name} </Text>}
+            />
+       
         <View>
           <View style={{ height: '40%' }}>
             {listStudentPoint !== null ? (
@@ -116,7 +110,7 @@ class studentDetail extends Component {
                     flexDirection: "row",
                     marginBottom: 10,
                     marginTop: 10,
-                    padding: 5
+                    padding: 5, 
                   }}>
                     <Text style={styles.point1}>ĐiểmKT1</Text>
                     <Text style={styles.point1} >ĐiểmKT2</Text>
@@ -162,8 +156,9 @@ class studentDetail extends Component {
             )
               : <Text style={{textAlign:'center'}}> Không có dữ liệu điểm danh</Text>}
           </View>
-          <View style={{ height: '20%' }} >
-             
+          <View style={{ height: '20%',   flexDirection: "row", textAlign: 'center', alignSelf: 'center'}} >
+            <Text style={{  flexDirection: "column"}}> Điểm tích lũy: {this.state.accumulation}</Text>
+            <Text  style={{  flexDirection: "column"}}> Tổng số tín chỉ: {this.state.countCreaditNumber}</Text>
           </View>
         </View>
       </View >
@@ -185,6 +180,12 @@ const styles = StyleSheet.create({
   point2: {
     width: '40%'
   },
+  style : {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 150,
+    backgroundColor: '#fff',
+  }
 });
 export default studentDetail;
 
@@ -192,7 +193,7 @@ export default studentDetail;
 class FlatListAttend extends Component {
   render() {
     return (
-        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5  }}>
+        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5, flex:1 }}>
             <Text style={styles.item}  >{moment(this.props.item.TimesDate).format("DD/ MM/ YYYY")}</Text>
             <Text  style={styles.item} > {this.props.item.Times}</Text>
             <Text style={styles.item} > {this.props.item.Note} </Text>
@@ -207,7 +208,7 @@ class FlatListPoint extends Component {
 
   render() {
     return (
-        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5  }}>
+        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5, margin: 5, }}>
             <Text style={styles.point1}  >{this.props.item.PointKT1}</Text>
             <Text  style={styles.point1} > {this.props.item.PointKT2}</Text>
             <Text style={styles.point1} > {this.props.item.PointGK} </Text>   
