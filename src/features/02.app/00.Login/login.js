@@ -39,7 +39,11 @@ class Login extends Component {
             if (response.data.auth === true) {
                 const token = response.data.accessToken;
                 const decoded = jwt_decode(token);
-                this.setState({ checkLogin: false })
+                this.setState({
+                    checkLogin: false,
+                    email: '',
+                    password: ''
+                })
                     await  AsyncStorage.setItem('USERID',decoded.user.Id);
                     await AsyncStorage.setItem('TOKEN', token);
                     this.props.navigation.navigate('Home');
@@ -77,6 +81,7 @@ class Login extends Component {
                 placeholderTextColor="#003f5c"
                 placeholder="Tài khoản"
                 autoCapitalize="none"
+                value={this.state.email}
                 onChangeText={this.handleEmail}
                 keyboardType="default"
             />
@@ -89,6 +94,7 @@ class Login extends Component {
                 placeholder="Password"
                 placeholderTextColor="#003f5c"
                 autoCapitalize="none"
+                value={this.state.password}
                 onChangeText={this.handlePassword}
                 secureTextEntry={true}
                 keyboardType="default"
