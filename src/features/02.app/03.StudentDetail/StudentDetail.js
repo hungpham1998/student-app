@@ -9,66 +9,36 @@ import {
   View,
   FlatList
 } from "react-native";
-import { Header,   } from 'react-native-elements'
-import { serviceapi } from "../../../api/api";
-
+import { api, serviceapi } from "../../../api/api";
+import { Header, Avatar, Card  } from 'react-native-elements'
 class studentDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
       status: false,
       name: this.props.navigation.state.params.Name,
-      accumulation: 0, 
-      countCreaditNumber:0,
-      listStudentPoint: [],
-      listStudentAttend:[]
+      listStudent: {},
     };
    this.componentDidMount;
   }
 
-  getstudentAttend = async () => {
+  getstudent = async () => {
     try {
       const response = await fetch(
-        serviceapi + "student/" + this.props.navigation.state.params.student + "/attendancesheet",
-        {
-          method: "GET"
-        }
-      );
-      const sresponse = await response.json();
-      if (sresponse.length > 0) {
-        await this.setState({
-          listStudentAttend:  sresponse[0].attendancesheets
-        });
-      }
-      else {
-        await this.setState({
-          listStudentAttend:  null
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  getstudentPoint = async () => {
-    try {
-      const response = await fetch(
-        serviceapi + "student/" + this.props.navigation.state.params.student + "/point",
+        serviceapi + "student/" + this.props.navigation.state.params.student + "/detail",
         {
           method: "GET"
         }
       );  
       const sresponse = await response.json();
-      if (sresponse.Student.student.length > 0) {
+      if (sresponse.student.length > 0) {
         await this.setState({
-          accumulation: sresponse.Student.accumulation,
-          countCreaditNumber:sresponse.Student.countCreaditNumber,
-          listStudentPoint:  sresponse.Student.student[0].pointstudents
+          listStudent:  sresponse.student[0]
         });
       }
       else {
         await this.setState({
-          listStudentPoint:  null
+          listStudent:  null
         });
       }
     } catch (error) {
@@ -77,8 +47,7 @@ class studentDetail extends Component {
   };
 
   componentDidMount() {
-    this.getstudentAttend();
-    this.getstudentPoint();
+    this.getstudent();
   }
 
   backtoPage = () => {
@@ -86,7 +55,7 @@ class studentDetail extends Component {
 };
 
   render() {
-    const { listStudentAttend, listStudentPoint } = this.state;
+    const { listStudent} = this.state;
 
     return (
       <View style={styles.body}>
@@ -99,68 +68,32 @@ class studentDetail extends Component {
               centerComponent={<Text style={{ alignItems: "center"}}> Thông tin sinh viên : {this.state.name} </Text>}
             />
        
-        <View>
-          <View style={{ height: '40%' }}>
-            {listStudentPoint !== null ? (
-              <View style={{ marginTop: 10, alignItems:'center'}}  >
-                <Text > Thông tin bảng điểm sinh viên: {this.state.name} </Text>
-                <View>
-                  <View style={{
-                    backgroundColor: '#66ccff',
-                    flexDirection: "row",
-                    marginBottom: 10,
-                    marginTop: 10,
-                    padding: 5, 
-                  }}>
-                    <Text style={styles.point1}>ĐiểmKT1</Text>
-                    <Text style={styles.point1} >ĐiểmKT2</Text>
-                    <Text  style={styles.point1} >ĐiểmGK</Text>
-                    <Text style={styles.point1} >ĐiểmCC</Text>
-                    <Text style={styles.point1} >ĐiểmT</Text> 
-                    <Text style={styles.point1} >ĐiểmTk</Text> 
-                    {/* <Text style={styles.point1} >ĐiểmT</Text>  */}
-                    <Text style={styles.point2} >Môn</Text> 
-                  </View>
-                  <FlatList data={listStudentPoint}
-                  renderItem={({ item, index }) => {
-                    return <FlatListPoint item={item} index={index} {...this.props} />;
-                    }} />
-                </View>
-              </View>
-            )
-              : <Text style={{textAlign:'center' , color: " #ff3300"}}> Không có dữ liệu điểm </Text>}
-          </View>
-          <View style={{ height: '40%' }}>
-            {listStudentAttend !== null ? (
-              <View style={{ marginTop: 10, alignItems:'center'}}  >
-                <Text > Thông tin điểm danh sinh viên: {this.state.name} </Text>
-                <View>
-                  <View style={{
-                    backgroundColor: '#66ccff',
-                    flexDirection: "row",
-                    marginBottom: 10,
-                    marginTop: 10,
-                    padding: 5}}>
-                    <Text style={styles.item}>Ngày điểm danh:</Text>
-                    <Text style={styles.item} >Số tiết</Text>
-                    <Text  style={styles.item} >Ghi chú:</Text>
-                    <Text style={styles.item} >Môn học:</Text>
-                    <Text style={styles.item} >Giảng viên:</Text> 
-                  </View>
-                  <FlatList data={listStudentAttend}
-                    renderItem={({ item, index }) => {
-                      return <FlatListAttend item={item} index={index} {...this.props} />;
-                      }} />
-                </View>
-              </View>
-            )
-              : <Text style={{textAlign:'center'}}> Không có dữ liệu điểm danh</Text>}
-          </View>
-          <View style={{ height: '20%',   flexDirection: "row", textAlign: 'center', alignSelf: 'center'}} >
-            <Text style={{  flexDirection: "column"}}> Điểm tích lũy: {this.state.accumulation}</Text>
-            <Text  style={{  flexDirection: "column"}}> Tổng số tín chỉ: {this.state.countCreaditNumber}</Text>
-          </View>
+       <View style={{ height: 200, marginTop:50, alignContent: 'center', textAlign: 'center', alignSelf:'center', }}>
+            <Avatar
+                size="xlarge"
+                rounded
+                activeOpacity={0.7}
+                source={listStudent.Image ? {uri: `${api}`+ listStudent.Image } : require("../../../image/image.jpg")}
+                />  
         </View>
+         <Card title="Thông tin chi tiết">
+
+            <View style={styles.user}>
+            <Text style={styles.user}> Tên sinh viên : {listStudent.Frist_Name ? listStudent.Frist_Name : ' '}{listStudent.Last_Name ? listStudent.Last_Name : ' '} </Text>
+            </View>
+            <View style={styles.user}>
+                <Text style={styles.user}>Địa chỉ : {listStudent.Address ? listStudent.Address : ' '}</Text>
+            </View> 
+            <View style={styles.user}>
+                <Text style={styles.user}>Ngày sinh : {listStudent.Brithday ? moment(listStudent.Brithday).format("DD/ MM/ YYYY") : ' '}</Text>
+            </View>  
+            <View style={styles.user}>
+                <Text style={styles.user}>Lớp : {listStudent.learnclass ? listStudent.learnclass.Title : ' '}</Text>
+            </View>    
+            <View style={styles.user}>
+                <Text style={styles.user}>Khoa: {listStudent.learnclass ? listStudent.learnclass.specailized.Title : ' '}</Text>
+            </View>
+        </Card>   
       </View >
     );
   }
@@ -171,53 +104,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#f5f5f0",
   },
-  item: {
-   width: '20%' 
-  },
-  point1: {
-    width: '10%'
-  },
-  point2: {
-    width: '40%'
-  },
-  style : {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 150,
-    backgroundColor: '#fff',
-  }
+  user: {
+    textAlign: 'center', 
+    alignContent:'center'
+}
+
 });
 export default studentDetail;
-
-
-class FlatListAttend extends Component {
-  render() {
-    return (
-        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5, flex:1 }}>
-            <Text style={styles.item}  >{moment(this.props.item.TimesDate).format("DD/ MM/ YYYY")}</Text>
-            <Text  style={styles.item} > {this.props.item.Times}</Text>
-            <Text style={styles.item} > {this.props.item.Note} </Text>
-            <Text  style={styles.item}> {this.props.item.subject.Title} </Text>
-            <Text style={styles.item}>  {this.props.item.account.UserName}  </Text>
-       </View>
-    );
-  }
-}
-
-class FlatListPoint extends Component {
-
-  render() {
-    return (
-        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5, margin: 5, }}>
-            <Text style={styles.point1}  >{this.props.item.PointKT1}</Text>
-            <Text  style={styles.point1} > {this.props.item.PointKT2}</Text>
-            <Text style={styles.point1} > {this.props.item.PointGK} </Text>   
-            <Text  style={styles.point1}> {this.props.item.PointCC} </Text>
-            <Text style={styles.point1}>  {this.props.item.PointT}  </Text>
-            <Text style={styles.point1}>  {this.props.item.PointTK}  </Text>
-            <Text style={styles.point2}>  {this.props.item.subject.Title}  </Text>
-       </View>
-
-    );
-  }
-}

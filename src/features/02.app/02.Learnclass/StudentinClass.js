@@ -15,7 +15,17 @@ class FlatListItem extends Component {
   pointstudent = () => {
     let student = this.props.item.Id;
     let Name = this.props.item.Frist_Name + " " + this.props.item.Last_Name;
+    this.props.navigation.navigate("StudentPoint", { student, Name  });
+  };
+  studentDetail = () => {
+    let student = this.props.item.Id;
+    let Name = this.props.item.Frist_Name + " " + this.props.item.Last_Name;
     this.props.navigation.navigate("studentDetail", { student, Name  });
+  }
+  attendstudent = () => {
+    let student = this.props.item.Id;
+    let Name = this.props.item.Frist_Name + " " + this.props.item.Last_Name;
+    this.props.navigation.navigate("StudentAttend", { student, Name  });
   };
 
   render() {
@@ -35,7 +45,7 @@ class FlatListItem extends Component {
             flexDirection: "column"
           }}
         >
-          <TouchableOpacity onPress={this.pointstudent}>
+          <TouchableOpacity onPress={this.studentDetail}>
             <Image source={this.props.item.Image ? { uri: `${api}`+ this.props.item.Image  }:require("../../../image/image.jpg")}
               style={{ width: 120, height: 120, borderRadius: 55 }}
             />
@@ -70,6 +80,14 @@ class FlatListItem extends Component {
                 <Text style={{ flexDirection: "column" }}>
                     {this.props.item.Code}
                 </Text>
+            </View>
+           <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity onPress={this.pointstudent} >
+                  <Text style={{ flexDirection: "column", marginRight: 2 }}>Bảng điểm </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.attendstudent} >
+                <Text style={{ flexDirection: "column" }}> Điểm danh</Text>
+              </TouchableOpacity>
             </View>
             </View>
          </View>
@@ -116,14 +134,6 @@ export default class StudentinClass extends Component {
         const title = this.state.title;
     return (
         <View style={styles.body}>
-            {/* <View
-                style={{
-                    flexDirection: "row",
-                     alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: 'white',
-                    paddingTop:10,
-          }}> */}
             <Header 
                 leftComponent={
                     <TouchableOpacity onPress={() => this.backtoPage()}>
@@ -131,18 +141,6 @@ export default class StudentinClass extends Component {
                     </TouchableOpacity>}
                 centerComponent={ <Text style={{ alignItems: "center"}}> Danh sách sinh viên lớp : {title}</Text>}
             />
-                {/* <View style={{
-                    flexDirection: "column",
-                    paddingRight: 35
-                }}>
-                    <TouchableOpacity onPress={() => this.backtoPage()}>
-                        <Image source={require("../../../image/left.png")}/>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flexDirection: "column" }}> 
-                    <Text style={{ alignItems: "center"}}> Danh sách sinh viên lớp : {title}</Text>
-                </View>
-            </View> */}
             <FlatList
                 data={listStudent}
                 scrollEnabled={true}

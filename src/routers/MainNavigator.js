@@ -9,15 +9,13 @@ import Learnclass from "../features/02.app/02.Learnclass/Learnclass";
 import Specailized from "../features/02.app/04.Specailized/Specailized";
 import Login from "../features/02.app/00.Login/login";
 import AccountDetail from "../features/02.app/00.Login/AccountDetail";
-
+import StudentPoint from "../features/02.app/03.StudentDetail/StudentPoint";
+import StudentAttend from "../features/02.app/03.StudentDetail/StudentAttend";
 
 const TabBar = createBottomTabNavigator(
   {
     Home: { screen: Home },
     Learnclass: { screen: Learnclass },
-    // Detail: { screen: Detail }
-    //   MessengerScreen: { screen: MessengerScreen },
-    //   ProFileScreen: { screen: ProFileScreen }
   },
   {
     tabBarOptions: {
@@ -52,6 +50,18 @@ const MainNavigator = createStackNavigator({
       header: null
     }
   },
+  StudentPoint: {
+    screen: StudentPoint,
+    navigationOptions: {
+      header: null
+    }
+  },
+  StudentAttend: {
+    screen: StudentAttend,
+    navigationOptions: {
+      header: null
+    }
+  },
   studentDetail: {
     screen: studentDetail,
     navigationOptions: {
@@ -63,6 +73,6 @@ const MainNavigator = createStackNavigator({
     navigationOptions: {
       header: null
     }
-  }
+  },
 });
 export default MainNavigator;
