@@ -27,6 +27,7 @@ class StudentAddtend extends Component {
 
   getstudentAttend = async () => {
     try {
+    //  console.warn(this.props.navigation.state.params.student)
       const response = await fetch(
         serviceapi + "student/" + this.props.navigation.state.params.student + "/attendancesheet",
         {
@@ -34,6 +35,7 @@ class StudentAddtend extends Component {
         }
       );
       const sresponse = await response.json();
+     // console.warn(sresponse)
       if (sresponse.length > 0) {
         await this.setState({
           listStudentAttend:  sresponse[0].attendancesheets
@@ -130,7 +132,7 @@ export default StudentAddtend;
 class FlatListAttend extends Component {
   render() {
     return (
-        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5, flex:1 }}>
+        <View style={{ backgroundColor: 'white', flexDirection: "row", padding: 5, flex:1, marginTop: 5 }}>
             <Text style={styles.item}  >{moment(this.props.item.TimesDate).format("DD/ MM/ YYYY")}</Text>
             <Text  style={styles.item} > {this.props.item.Times}</Text>
             <Text style={styles.item} > {this.props.item.Note} </Text>

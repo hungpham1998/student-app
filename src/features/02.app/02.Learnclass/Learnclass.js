@@ -25,7 +25,7 @@ class FlatListItem extends Component {
   render() {
     return (
       <View 
-        keys= {this.props.item.Id}
+        keys = {this.props.index}
         style={{
           flex: 1,
           alignContent:'space-around',
