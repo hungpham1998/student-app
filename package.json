@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^10.2.0",
-    "async": "^3.2.0",
+    "async": "^3.2.2",
     "axios": "^0.19.2",
     "expo": "^35.0.0",
     "jwt-decode": "^2.2.0",
